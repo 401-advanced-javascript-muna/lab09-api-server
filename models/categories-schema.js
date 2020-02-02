@@ -8,16 +8,16 @@ const categoriesSchema = mongoose.Schema({
 }, { toObject: { virtuals: true }, toJSON: { virtuals: true }});
 // id: { required: true },
 // name: { required: true },
-categoriesSchema.virtual('allProducts',{
+categoriesSchema.virtual('allProducts',{ //collection
   ref: 'products' ,
-  localField: 'name',
+  localField: 'name',//categories schema
   foreignField: 'category',
   justOne: false, ////////////////////////////???
 
 });
 
 
-categoriesSchema.pre('findOne',function(){
+categoriesSchema.pre('findOne',function(){//connection before 
   try {
 
     this.populate('allProducts');   //HOCK : get populate {}

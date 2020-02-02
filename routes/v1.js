@@ -64,6 +64,7 @@ const categories = require('../models/categories.js');
 
 const products = require('../models/products.js');
 
+//dynamic route
 function getModel(req, res, next) {
   let model = req.params.model;
   // console.log('********////////',model);
@@ -91,7 +92,7 @@ router.get('/api/v1/:model/:id', handleGetOne);
 function handleGetAll(req, res, next) {
   req.model.get()
     .then(results => {
-      console.log('******** results: *********', results);
+      // console.log('******** results: *********', results);
       let count = results.length;
       res.json({ count, results });
     });
