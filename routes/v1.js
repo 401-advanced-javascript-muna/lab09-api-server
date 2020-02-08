@@ -1,3 +1,5 @@
+/* eslint-disable new-cap */
+/* eslint-disable no-unused-vars */
 'use strict ';
 
 const express = require('express');
@@ -64,8 +66,7 @@ function postRecord(req, res, next) {
 
   req.model.create(req.body)
     .then(data=> {
-      // res.status(201).json(data);
-      res.json(data);
+      res.status(201).json(data);
     })
     .catch(next);
 }
@@ -82,7 +83,8 @@ function deleteRecord(req, res, next) {
   let id = req.params.id;
   const message = 'the record is no longer in the database';
   req.model.delete(id)
-    .then(results => {
+    .then(data => {
+      console.log('data',data);
       res.status(200).json({message});
     }).catch(next);
 }

@@ -12,7 +12,8 @@
 ### Setup
 
 #### `.env` requirements (where applicable)
-
+MONGOOSE_URI=mongodb://localhost:27017/storedb
+PORT=3000
 
 #### How to initialize/run your application (where applicable)
 
