@@ -1,9 +1,16 @@
+/* eslint-disable no-empty-function */
+/* eslint-disable no-undef */
+// eslint-disable-next-line strict
 'use strict';
 
-const schema = require('./categories-schema');
+const schema = require('../models/products-schema');
 
-const dataModel = require('./model');
+const Model = require('./model');
 
-class Products extends dataModel{}
+
+class Products extends Model{}
+
+
+
 
 module.exports = new Products(schema);

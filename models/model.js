@@ -1,30 +1,35 @@
-'use strict';
+'use strict ';
 
-class OurModel{
+class Model {
+
   constructor(schema){
     this.schema = schema;
   }
-  get(id){
-    if(id){
-        // console.log('kkkkkkkkkkkk')
-      return this.schema.findById(id);  //search by id
+
+  get(_id){
+    if(_id){
+      return this.schema.findOne({_id});
     }
-    else{
-      return this.schema.find({});    //will return all records
+
+    else {
+      return this.schema.find({});
     }
   }
-  post(record){
-    let newRecord = new this.schema(record);
+
+  create(record){
+    // eslint-disable-next-line
+      let newRecord = new this.schema(record);
     return newRecord.save();
   }
-    update(_id, record) {
-      return schema.findByIdAndUpdate(_id, record, { new: true });
-    }
 
-  delete(_id) {
-    return schema.findByIdAndDelete(_id);
+  update(_id,record){
+    return this.schema.findByIdAndUpdate(_id,record,{ new:true});
   }
+
+
+  delete(_id){
+    return this.schema.findByIdAndDelete(_id);
+  }
+
 }
-
-
-module.exports = OurModel;
+module.exports = Model;

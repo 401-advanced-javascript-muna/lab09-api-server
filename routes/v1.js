@@ -1,115 +1,89 @@
+'use strict ';
 
-
-'use strict';
-
-// const express = require('express');
-// const router = express.Router();
-
-// const categories = require('../models/categories.js');
-// const products = require('../models/products.js');
-
-// function getModel(req, res, next) {
-//   let model = req.params.model;
-
-//   switch(model) {
-//     case "categories":
-//       req.model = categories;
-//       next();
-//       return;
-//     case "products":
-//       req.model = products;
-//       next();
-//       return;
-//     default:
-//       next('invalid model');
-//       return;
-//   }
-// }
-
-// router.param('model', getModel);
-
-// router.get('/api/v1/:model', handleGetAll);
-// router.post('/api/v1/:model', handlePost);
-// router.get('/api/v1/:model/:id', handleGetOne);
-
-// function handleGetAll(req, res, next) {
-//   req.model.get()
-//     .then(results => {
-//       console.log('******** results: *********', results);
-//       let count = results.length;
-//       res.json({ count, results });
-//     });
-// }
-
-// function handleGetOne(req, res, next) {
-//   let id = req.params.id;
-//   req.model.get(id)
-//     .then(record => {
-//       res.json(record);
-//     }).catch(next);
-// }
-
-// function handlePost(req, res, next) {
-//   req.model.post(req.body)
-//     .then(results => {
-//       res.json(results);
-//     }).catch(next);
-// }
-
-// module.exports = router;
 const express = require('express');
+
 const router = express.Router();
 
-const categories = require('../models/categories.js');
+const categories = require('../models/categories');
+const products = require('../models/products');
 
-const products = require('../models/products.js');
+//////categories and products as generic route using switch
 
-//dynamic route
-function getModel(req, res, next) {
+function anyModel(req, res, next) {
   let model = req.params.model;
-  // console.log('********////////',model);
-  switch (model){
+
+
+  switch(model) {
+
+  // middleware request
+  // api/v1/categories
   case 'categories':
-    req.model = categories;  //add to req model=categories
+    req.model = categories;
     next();
-    return ;
+    return;
+    // api/v1/produts
   case 'products':
     req.model = products;
     next();
     return;
+    // for errors
   default:
-    next('Invalid Model choose from categories or products');
+    next(' INVALID MODEL');
     return;
   }
 }
 
-router.param('model', getModel);
+router.param('model', anyModel);  //invoke anyModel
 
-router.get('/api/v1/:model', handleGetAll);
-router.post('/api/v1/:model', handlePost);
-router.get('/api/v1/:model/:id', handleGetOne);
+router.get('/api/v1/:model', getAllData); //to get all data
+router.get('/api/v1/:model/:id', getById);
+router.post('/api/v1/:model', postRecord);
+router.put('/api/v1/:model/:id', update);
+router.delete('/api/v1/:model/:id', deleteRecord);
 
-function handleGetAll(req, res, next) {
+
+function getAllData(req, res, next) {
   req.model.get()
-    .then(results => {
-      // console.log('******** results: *********', results);
-      let count = results.length;
-      res.json({ count, results });
+    .then(data => {
+      let count = data.length;
+      res.status(200).json({count, data});
     });
 }
 
-function handleGetOne(req, res, next) {
+function getById(req, res, next) {
   let id = req.params.id;
   req.model.get(id)
-    .then(record => {
-      res.json(record);
+    .then(oneRecord => {
+      res.status(200).json(oneRecord);
+    })
+    .catch(next);
+}
+
+function postRecord(req, res, next) {
+  console.log(req.body,'*************************');
+
+  req.model.create(req.body)
+    .then(data=> {
+      // res.status(201).json(data);
+      res.json(data);
+    })
+    .catch(next);
+}
+
+function update(req, res, next) {
+  let id = req.params.id;
+  req.model.update(id,req.body)
+    .then(data => {
+      res.status(200).json(data);
     }).catch(next);
 }
 
-function handlePost(req, res, next) {
-  req.model.post(req.body)
+function deleteRecord(req, res, next) {
+  let id = req.params.id;
+  const message = 'the record is no longer in the database';
+  req.model.delete(id)
     .then(results => {
-      res.json(results);
+      res.status(200).json({message});
     }).catch(next);
 }
 
