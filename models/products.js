@@ -7,10 +7,10 @@ const schema = require('../models/products-schema');
 
 const Model = require('./model');
 
-
+/**
+ * Products class extends to Model
+ */
 class Products extends Model{}
-
-
 
 
 module.exports = new Products(schema);

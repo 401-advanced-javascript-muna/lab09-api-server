@@ -11,6 +11,13 @@ const products = require('../models/products');
 
 //////categories and products as generic route using switch
 
+/**
+  * Dynamic route using switch
+  * @param {object} req
+  * @param {object} res
+  * @param {object} next
+  */
+
 function anyModel(req, res, next) {
   let model = req.params.model;
 
@@ -36,14 +43,17 @@ function anyModel(req, res, next) {
 }
 
 router.param('model', anyModel);  //invoke anyModel
-
 router.get('/api/v1/:model', getAllData); //to get all data
 router.get('/api/v1/:model/:id', getById);
 router.post('/api/v1/:model', postRecord);
 router.put('/api/v1/:model/:id', update);
 router.delete('/api/v1/:model/:id', deleteRecord);
-
-
+/**
+ * To get all data from database
+ * @param {object} req
+ * @param {object} res
+ * @param {object} next
+ */
 function getAllData(req, res, next) {
   req.model.get()
     .then(data => {
@@ -51,7 +61,12 @@ function getAllData(req, res, next) {
       res.status(200).json({count, data});
     });
 }
-
+/**
+ * To get data by Id from database
+ * @param {object} req
+ * @param {object} res
+ * @param {object} next
+ */
 function getById(req, res, next) {
   let id = req.params.id;
   req.model.get(id)
@@ -60,17 +75,25 @@ function getById(req, res, next) {
     })
     .catch(next);
 }
-
+/**
+ * To create a record and add it to db
+ * @param {object} req
+ * @param {object} res
+ * @param {object} next
+ */
 function postRecord(req, res, next) {
-  console.log(req.body,'*************************');
-
   req.model.create(req.body)
     .then(data=> {
       res.status(201).json(data);
     })
     .catch(next);
 }
-
+/**
+ * To update a record
+* @param {object} req
+ * @param {object} res
+ * @param {object} next
+ */
 function update(req, res, next) {
   let id = req.params.id;
   req.model.update(id,req.body)
@@ -78,10 +101,15 @@ function update(req, res, next) {
       res.status(200).json(data);
     }).catch(next);
 }
-
+/**
+ * To delete a record from database
+* @param {object} req
+ * @param {object} res
+ * @param {object} next
+ */
 function deleteRecord(req, res, next) {
   let id = req.params.id;
-  const message = 'the record is no longer in the database';
+  const message = 'The record is no longer in the database';
   req.model.delete(id)
     .then(data => {
       console.log('data',data);

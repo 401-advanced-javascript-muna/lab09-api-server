@@ -32,7 +32,7 @@ describe('Categories API', () => {
         // console.log(record);
         mockReq.get(record._id)
           .then(category => {
-            console.log(category,'lllllllllllllllllll');
+            // console.log(category,'lllllllllllllllllll');
             Object.keys(obj).forEach(key => {
               expect(category[key]).toEqual(obj[key]);
             });

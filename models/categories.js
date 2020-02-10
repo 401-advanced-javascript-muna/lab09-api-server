@@ -7,6 +7,9 @@ const schema = require('./categories-schema');
 
 const Model = require('./model');
 
+/**
+ * Categoties class extends to Model
+ */
 class Categories extends Model{}
 
 

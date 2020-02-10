@@ -8,7 +8,9 @@
 const mongoose = require('mongoose');
 
 require('./categories-schema');
-
+/**
+ * product schema
+ */
 const productschema  = mongoose.Schema({
   name: { type: String, required: true },
   price :{type: String,required :true},

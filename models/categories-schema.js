@@ -8,6 +8,9 @@ const mongoose = require ('mongoose');
 
 require('./products-schema.js');
 
+/**
+ * categorieSchema
+ */
 const categorieSchema = mongoose.Schema({
   name : { type: String, required: true},
   description: { type: String, required: true},
@@ -15,6 +18,9 @@ const categorieSchema = mongoose.Schema({
 
 });
 
+/**
+ * virtual connection bewtween categories schema and products schema
+ */
 categorieSchema.virtual('actualProducts', {
 
   ref: 'products',
@@ -24,7 +30,9 @@ categorieSchema.virtual('actualProducts', {
 
 });
 
-
+/**
+ * To join between categorie Schema and products schema
+ */
 categorieSchema.pre('findOne',function(){//connection before
   try {
 
@@ -35,4 +43,5 @@ categorieSchema.pre('findOne',function(){//connection before
 
   }
 });
+
 module.exports = mongoose.model('categorieSchema', categorieSchema);//'categoriesSchema' is collection name
